@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Adult Movie Subtitles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #ageCheck {
+            text-align: center;
+            margin-top: 100px;
+        }
+        #mainPage, #galleryPage, #contactPage {
+            display: none;
+        }
+        header {
+            background-color: #f8f8f8;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            margin-top: 20px;
+            text-align: center;
+        }
+        nav button {
+            margin: 5px;
+            padding: 10px 20px;
+        }
+        .section {
+            display: none;
+        }
+        #galleryForm, #contactInfo {
+            margin-top: 20px;
+        }
+        #galleryList {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Age check -->
+<div id="ageCheck">
+    <h1>Are you over 18?</h1>
+    <button onclick="checkAge(true)">Yes</button>
+    <button onclick="checkAge(false)">No</button>
+</div>
+
+<!-- Main page -->
+<div id="mainPage">
+    <header>
+        <h1>Welcome to Japanese Adult Movie Subtitles</h1>
+    </header>
+    <nav>
+        <button onclick="showSection('galleryPage')">Gallery</button>
+        <button onclick="showSection('contactPage')">Contact</button>
+    </nav>
+    <section id="homePage">
+        <h2>This site contains subtitles for Japanese adult movies.</h2>
+    </section>
+</div>
+
+<!-- Gallery page -->
+<div id="galleryPage" class="section">
+    <header>
+        <h1>Gallery</h1>
+    </header>
+    <div id="galleryForm">
+        <h3>Add a Title and Image</h3>
+        <input type="text" id="movieTitle" placeholder="Movie Title"><br><br>
+        <input type="file" id="movieImage"><br><br>
+        <button onclick="addToGallery()">Add to Gallery</button>
+    </div>
+    <div id="galleryList">
+        <h3>Gallery List</h3>
+        <ul id="galleryItems">
+            <!-- Gallery items will be added here -->
+        </ul>
+    </div>
+</div>
+
+<!-- Contact page -->
+<div id="contactPage" class="section">
+    <header>
+        <h1>Contact</h1>
+    </header>
+    <div id="contactInfo">
+        <h3>Contact Information</h3>
+        <p>Email: your-email@example.com</p>
+        <p>Phone: +123456789</p>
+        <p>Address: 123 Street Name, City, Country</p>
+    </div>
+</div>
+
+<script>
+    // Age check function
+    function checkAge(isAdult) {
+        if (isAdult) {
+            document.getElementById('ageCheck').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+        } else {
+            alert("You must be over 18 to enter this site.");
+            document.body.innerHTML = "<h1>Access Denied</h1>";
+        }
+    }
+
+    // Show section function
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+    }
+
+    // Add to gallery function
+    function addToGallery() {
+        var title = document.getElementById('movieTitle').value;
+        var imageInput = document.getElementById('movieImage');
+        var imageFile = imageInput.files[0];
+
+        if (title && imageFile) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var galleryItem = document.createElement('li');
+                galleryItem.innerHTML = `<strong>${title}</strong><br><img src="${e.target.result}" alt="${title}" width="100">`;
+                document.getElementById('galleryItems').appendChild(galleryItem);
+            }
+            reader.readAsDataURL(imageFile);
+        } else {
+            alert('Please enter a title and select an image.');
+        }
+    }
+</script>
+
+</body>
+</html>
